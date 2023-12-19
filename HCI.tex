@@ -1,0 +1,701 @@
+%%
+%% This is file `sample-manuscript.tex',
+%% generated with the docstrip utility.
+%%
+%% The original source files were:
+%%
+%% samples.dtx  (with options: `manuscript')
+%% 
+%% IMPORTANT NOTICE:
+%% 
+%% For the copyright see the source file.
+%% 
+%% Any modified versions of this file must be renamed
+%% with new filenames distinct from sample-manuscript.tex.
+%% 
+%% For distribution of the original source see the terms
+%% for copying and modification in the file samples.dtx.
+%% 
+%% This generated file may be distributed as long as the
+%% original source files, as listed above, are part of the
+%% same distribution. (The sources need not necessarily be
+%% in the same archive or directory.)
+%%
+%% Commands for TeXCount
+%TC:macro \cite [option:text,text]
+%TC:macro \citep [option:text,text]
+%TC:macro \citet [option:text,text]
+%TC:envir table 0 1
+%TC:envir table* 0 1
+%TC:envir tabular [ignore] word
+%TC:envir displaymath 0 word
+%TC:envir math 0 word
+%TC:envir comment 0 0
+%%
+%%
+%% The first command in your LaTeX source must be the \documentclass command.
+%%%% Small single column format, used for CIE, CSUR, DTRAP, JACM, JDIQ, JEA, JERIC, JETC, PACMCGIT, TAAS, TACCESS, TACO, TALG, TALLIP (formerly TALIP), TCPS, TDSCI, TEAC, TECS, TELO, THRI, TIIS, TIOT, TISSEC, TIST, TKDD, TMIS, TOCE, TOCHI, TOCL, TOCS, TOCT, TODAES, TODS, TOIS, TOIT, TOMACS, TOMM (formerly TOMCCAP), TOMPECS, TOMS, TOPC, TOPLAS, TOPS, TOS, TOSEM, TOSN, TQC, TRETS, TSAS, TSC, TSLP, TWEB.
+% \documentclass[acmsmall]{acmart}
+% \documentclass[sigconf]{acmart}
+
+%%%% Large single column format, used for IMWUT, JOCCH, PACMPL, POMACS, TAP, PACMHCI
+% \documentclass[acmlarge,screen]{acmart}
+
+%%%% Large double column format, used for TOG
+% \documentclass[acmtog, authorversion]{acmart}
+
+%%%% Generic manuscript mode, required for submission
+%%%% and peer review
+\documentclass[manuscript,screen,nonacm]{acmart}
+\usepackage[title]{appendix}
+\usepackage{multirow}
+\usepackage{tablefootnote}
+% \usepackage{enumitem}
+\newcommand\qref[1]{(\ref{#1})}
+
+
+% For Java Code %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{listings}
+\usepackage{color}
+\usepackage{xcolor}
+\definecolor{dkgreen}{rgb}{0,0.6,0}
+\definecolor{gray}{rgb}{0.5,0.5,0.5}
+\definecolor{mauve}{rgb}{0.58,0,0.82}
+\lstset{frame=tb,
+     language=Java,
+     aboveskip=3mm,
+     belowskip=3mm,
+     showstringspaces=false,
+     columns=flexible,
+     basicstyle = \ttfamily\small,
+     numbers=none,
+     numberstyle=\tiny\color{gray},
+     keywordstyle=\color{blue},
+     commentstyle=\color{dkgreen},
+     stringstyle=\color{mauve},
+     breaklines=true,
+     breakatwhitespace=true,
+     tabsize=3
+}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%% Fonts used in the template cannot be substituted; margin 
+%% adjustments are not allowed.
+%%
+%% \BibTeX command to typeset BibTeX logo in the docs
+\AtBeginDocument{%
+  \providecommand\BibTeX{{%
+    \normalfont B\kern-0.5em{\scshape i\kern-0.25em b}\kern-0.8em\TeX}}}
+
+%% Rights management information.  This information is sent to you
+%% when you complete the rights form.  These commands have SAMPLE
+%% values in them; it is your responsibility as an author to replace
+%% the commands and values with those provided to you when you
+%% complete the rights form.
+% \setcopyright{acmcopyright}
+% \copyrightyear{2023}
+% \acmYear{2023}
+% \acmDOI{XXXXXXX.XXXXXXX}
+
+%% These commands are for a PROCEEDINGS abstract or paper.
+% \acmConference[Conference acronym 'XX]{Make sure to enter the correct
+%   conference title from your rights confirmation emai}{June 03--05,
+%   2018}{Woodstock, NY}
+%
+%  Uncomment \acmBooktitle if th title of the proceedings is different
+%  from ``Proceedings of ...''!
+%
+% \acmBooktitle{Woodstock '18: ACM Symposium on Neural Gaze Detection,
+%  June 03--05, 2018, Woodstock, NY} 
+% \acmPrice{15.00}
+% \acmISBN{978-1-4503-XXXX-X/18/06}
+
+
+%%
+%% Submission ID.
+%% Use this when submitting an article to a sponsored event. You'll
+%% receive a unique submission ID from the organizers
+%% of the event, and this ID should be used as the parameter to this command.
+%%\acmSubmissionID{123-A56-BU3}
+
+%%
+%% For managing citations, it is recommended to use bibliography
+%% files in BibTeX format.
+%%
+%% You can then either use BibTeX with the ACM-Reference-Format style,
+%% or BibLaTeX with the acmnumeric or acmauthoryear sytles, that include
+%% support for advanced citation of software artefact from the
+%% biblatex-software package, also separately available on CTAN.
+%%
+%% Look at the sample-*-biblatex.tex files for templates showcasing
+%% the biblatex styles.
+%%
+
+%%
+%% The majority of ACM publications use numbered citations and
+%% references.  The command \citestyle{authoryear} switches to the
+%% "author year" style.
+%%
+%% If you are preparing content for an event
+%% sponsored by ACM SIGGRAPH, you must use the "author year" style of
+%% citations and references.
+%% Uncommenting
+%% the next command will enable that style.
+%%\citestyle{acmauthoryear}
+
+%%
+%% end of the preamble, start of the body of the document source.
+\begin{document}
+
+%%
+%% The "title" command has an optional parameter,
+%% allowing the author to define a "short title" to be used in page headers.
+\title{A Comparative Study of ChatGPT with Respect to Computer Science Education Learning Outcomes}
+
+%%
+%% The "author" command and its associated commands are used to define
+%% the authors and their affiliations.
+%% Of note is the shared affiliation of the first two authors, and the
+%% "authornote" and "authornotemark" commands
+%% used to denote shared contribution to the research.
+\author{Wenxin Dang}
+\authornote{All authors contributed equally to this research. Names are listed in alphabetical order.}
+\email{wenxind3@illinois.edu}
+\author{Yanlin Liu}
+\authornotemark[1]
+\email{yl128@illinois.edu}
+\author{Junda Shen}
+\authornotemark[1]
+\email{jundas2@illinois.edu}
+\author{Henry Wang}
+\authornotemark[1]
+\email{henryw6@illinois.edu}
+\author{Bingchang Xu}
+\authornotemark[1]
+\email{xu89@illinois.edu}
+\author{Colin Zhou}
+\email{colinz2@illinois.edu}
+\authornotemark[1]
+\affiliation{%
+  \institution{University of Illinois Urbana-Champaign}
+  \city{Urbana}
+  \country{Illinois}}
+
+% \orcid{1234-5678-9012}
+% \author{G.K.M. Tobin}
+% \email{webmaster@marysville-ohio.com}
+% \affiliation{%
+%   \institution{Institute for Clarity in Documentation}
+%   \streetaddress{P.O. Box 1212}
+%   \city{Dublin}
+%   \state{Ohio}
+%   \country{USA}
+%   \postcode{43017-6221}
+% }
+
+
+%%
+%% By default, the full list of authors will be used in the page
+%% headers. Often, this list is too long, and will overlap
+%% other information printed in the page headers. This command allows
+%% the author to define a more concise list
+%% of authors' names for this purpose.
+\renewcommand{\shortauthors}{Team 12}
+
+%%
+%% The abstract is a short summary of the work to be presented in the
+%% article.
+\begin{abstract}
+ChatGPT, an AI chatbot developed by OpenAI, has received significant attention because of its capacity to produce human-like text by leveraging large language models trained on vast amounts of data. While it has been widely used on many different tasks and shows immense potential in assistance to human work, its ability in assisting humans in educational settings has not been well discussed. This research project aims to address this gap by conducting a comparative study to discover the efficiency of ChatGPT in helping students solve a coding problem related to unfamiliar concepts. The findings reveal that ChatGPT does not offer a significant advantage over traditional online search methods in improving students' coding abilities in unaccustomed subjects. This study has significant implications for extending the practice of ChatGPT in Computer Science education and self-learning environments.
+\end{abstract}
+
+%%
+%% The code below is generated by the tool at http://dl.acm.org/ccs.cfm.
+%% Please copy and paste the code instead of the example below.
+%%
+\begin{CCSXML}
+<ccs2012>
+   <concept>
+       <concept_id>10003120.10003121.10011748</concept_id>
+       <concept_desc>Human-centered computing~Empirical studies in HCI</concept_desc>
+       <concept_significance>500</concept_significance>
+       </concept>
+ </ccs2012>
+\end{CCSXML}
+
+\ccsdesc[500]{Human-centered computing~Empirical studies in HCI}
+
+
+
+
+%%
+%% Keywords. The author(s) should pick words that accurately describe
+%% the work being presented. Separate the keywords with commas.
+\keywords{creativity, creativity support tool, ChatGPT}
+
+%% A "teaser" image appears between the author and affiliation
+%% information and the body of the document, and typically spans the
+%% page.
+% \begin{teaserfigure}
+%   \includegraphics[width=\textwidth]{sampleteaser}
+%   \caption{Seattle Mariners at Spring Training, 2010.}
+%   \Description{Enjoying the baseball game from the third-base
+%   seats. Ichiro Suzuki preparing to bat.}
+%   \label{fig:teaser}
+% \end{teaserfigure}
+
+% \received{20 February 2007}
+% \received[revised]{12 March 2009}
+% \received[accepted]{5 June 2009}
+
+%%
+%% This command processes the author and affiliation and title
+%% information and builds the first part of the formatted document.
+\maketitle
+
+\section{Introduction}
+ChatGPT~\cite{openai2021chatgpt} is an artificial intelligence (AI) chatbot developed by OpenAI. Upon its publication, it became the state of the art Large Language Model (LLM)~\cite{halevy2009unreasonable} and gained unprecedented popularity for its powerful capabilities and application potential. Other models like Google’s Bard~\cite{collins2021lamda} and Meta’s LLaMA~\cite{meta2023introducing} also came out shortly after in an attempt to compete in the market. Being capable of producing highly sophisticated responses that are often indistinguishable from those written by humans, these models have the potential to reshape the way people interact with computers and bring revolutionary changes to many fields including writing, art, marketing, software engineering, and education~\cite{fraiwan2023review}.
+
+As a fundamental foundation in computer science, programming techniques are crucial for students to master before they start learning and exercising other skills. The current computer science education landscape has several problems and challenges that can hinder students' learning experiences on mastering programming techniques. One significant issue is the lack of personalized and adaptive teaching methods~\cite{kopeyev2020using, cheah2020factors}. Traditional lecture-based approaches often fail to cater to the diverse learning needs and pace of all students, which can lead to difficulties in grasping complex programming concepts. Another challenge lies in the fragmentation of learning resources~\cite{cheah2020factors}. With information spread across multiple platforms and formats, students may struggle to find a cohesive and structured learning path, leading to confusion or even frustration, which could further reduce students' enthusiasm for learning programming. Additionally, students may have questions or encounter obstacles while working on programming assignments or projects outside of class hours~\cite{jeuring2022towards}. In such instances, they may not receive timely guidance from instructors, which can impede their learning progress and discourage them from seeking help in the future. These challenges collectively highlight the need for innovative solutions that can effectively help learning and creative activities in programming.
+
+ChatGPT may present a promising solution to the challenges in computer science education by providing personalized and adaptive learning experiences that can aid students in mastering programming techniques and concepts. ChatGPT can be viewed as a next-generation search engine, where students can receive immediate and specific guidance when encountering programming obstacles or unfamiliar topics instead of sifting through countless online sources. This can save time and effort, allowing students to focus on more creative and advanced tasks. However, ChatGPT's ability to provide tailored answers to specific questions may also have negative consequences. For example, it may offer fully correct code when a user asks for help with a coding problem, even if the user doesn't fully understand the underlying concepts. Outcomes like this may compel users to change their learning patterns and skip programming tutorials entirely.
+
+The objective of this research project is to investigate the effectiveness of using ChatGPT in assisting individuals to solve coding problems associated with unfamiliar computer science related concepts. Furthermore, we aim to examine the impact of integrating ChatGPT into the traditional method for learning how to code, and how this collaboration can facilitate the creative learning experience.
+
+To achieve our research objectives, we propose the following research questions:
+\begin{itemize}
+\item {How effective is ChatGPT in helping students solve a coding problem related to an unfamiliar topic?}
+\item {Does ChatGPT positively help students learn an unfamiliar topic?}
+\end{itemize}
+
+By addressing these research questions, we hope to shed light on the potential benefits of utilizing AI tools like ChatGPT in coding environments with a focus on their creative support capabilities. This research project will not only contribute to the ongoing discourse on the role of AI in fostering creativity within the coding field, but also provide valuable insights for developers and coding enthusiasts seeking to optimize their learning process and problem-solving skills in the ever-evolving technological landscape.
+
+
+
+\section{Related Work}
+Although language models have a history of about 100 years, their performance did not significantly improve until recently, with the development of deep learning and the availability of massive datasets. Large Language Models (LLMs) have gone through significant evolution with numerous applications in various domains. There are currently several types of LLMs. Bidirectional Encoder Representations from Transformers (BERT)~\cite{devlin2018bert} is a transformer-based architecture. It employs a masked language modeling pre-training task to acquire context-aware word representations and capture the relationships between words in a sentence. Another example is the GPT model, which is trained using the unsupervised learning technique and is capable of predicting the next word based on the previous words in a sentence. ChatGPT is the most popular chatbot supported by GPT-3.5 or GPT-4. Focusing on conversation, ChatGPT is trained with extensive text datasets. It also benefits from reinforcement learning from human feedback (RLHF)~\cite{lambert2022illustrating} technique and uses massive human queries and corresponding responses as training data.
+
+Recent studies showed that ChatGPT performs well in many fields, such as education and software engineering~\cite{sobania2023analysis}. Fraiwan and Khasawneh~\cite{fraiwan2023review} investigated the application of ChatGPT in education and concluded that it could offer valuable resources and assistance to both teachers and students, ultimately enhancing the efficiency and effectiveness of the learning process. Tian et al.~\cite{tian2023chatgpt} evaluated ChatGPT’s ability to generate code for LeetCode questions and demonstrated that while ChatGPT excelled at generating code for previously encountered problems, it faced difficulties with unseen problems. They also found that long prompts have a negative impact on ChatGPT's inference capabilities. Moreover, the performance of ChatGPT in bug-fixing tasks could be adversely affected by prompts that are not related to bug information. Taking inspiration from these works, our group’s focus is on investigating the effectiveness of ChatGPT in providing assistance to students when they face unfamiliar coding questions. We also aim to determine whether such assistance enhances the students' learning experience of coding concepts.
+
+
+
+\section{Methodology}\label{Methodology}
+\subsection{Study Design}
+In order to examine the effectiveness of ChatGPT in aiding students with solving coding questions related to an unfamiliar concept, we designed a controlled experiment with two different problem-solving conditions. At the beginning of the experiment, we provided all participants in the control and experiment groups with an annotated starter code (see Appendix \ref{StarterCode}) and released the same coding task to all participants. However, as shown in Figure \ref{fig:workflow}, participants assigned to Path 1 could only use ChatGPT to solve the coding question. In contrast, participants who followed Path 2 were not allowed to interact with ChatGPT but could use all other online resources to help them find a solution.
+
+We analyzed the result both quantitatively and qualitatively. To quantify the result, we measured the time it took for each participant to complete the problem or marked it as incomplete if a participant could not come up with a correct solution within 45 minutes. In addition to the general performance, we broke the coding task into sub-stages with four milestones to obtain more insights on the time allocation: \textit{understand the problem}, \textit{start to code}, \textit{implement the co-operation between threads}, and \textit{achieve the expected output}. We compared the average time that participants in the control and experiment groups took to achieve each milestone.
+
+Beyond quantified evaluations, we required participants to complete questionnaires before and after the experiment (see Appendix \ref{preQs}). Through participants' responses to questionnaires, we filtered target participants and observed their voluntary reflections on a particular learning method.
+
+
+\begin{figure}[t!]
+  \centering
+  \includegraphics[width=0.7\linewidth]{images/workflow.png}
+  \caption{Experiment Workflow Diagram}
+  % \Description{A woman and a girl in white dresses sit in an open car.}
+  \label{fig:workflow}
+\end{figure}
+
+
+\subsection{Participants Selection}
+To ensure that we select participants who align with our goals, we determined that they should have diverse backgrounds and varying levels of knowledge in coding across multiple languages. It is also important that in terms of skill level, they frequently encounter unfamiliar coding problems during their learning process. Our participants are primarily students from major universities in the United States and Canada, with a majority of them coming from the University of Illinois Urbana-Champaign. The participants consist of graduate-level students and seniors, with 5 and 5 respectively in each group. The participants' levels of coding experience vary. While the majority have taken advanced level CS courses in the range of 300-400 level, there are also participants who have work experience in coding or have only taken lower level (100-200 level) CS courses. Despite their advanced coding experience, many of them are not familiar with the CS concept (threading) in the programming language Java, as the median confidence level from the pre-experiment survey is only 2 out of 5. However, it should be noted that many participants do understand the basic concepts of threading.
+
+
+\subsection{Questionnaire Design}
+To obtain a more comprehensive understanding of participants' backgrounds and their attitudes and feelings toward a learning method, we designed questionnaires to be taken before and after the experiment (see Appendix \ref{preQs}). The pre-experiment questionnaire (see Appendix \ref{ChatGPTpre}) measures participants' programming backgrounds and attitudes toward ChatGPT and AI technology. The first two questions gauge the participants' prior knowledge and familiarity with ChatGPT. This helps account for potential biases when analyzing the results. The third and seventh questions reflect participants' previous impressions on ChatGPT and AI tools in general. These expectations may influence participants' motivation. Understanding their previous beliefs helps us measure changes in participants' attitudes about ChatGPT after the study, and provide valuable insights into whether and how the participants' experiences with ChatGPT influence their perceptions of its usefulness. The fourth and fifth questions give us participants' levels in programming and thus establishes a baseline before the interaction with ChatGPT. This information is critical when evaluating the effectiveness of ChatGPT in improving learning outcomes for individuals with different programming backgrounds. Participants already familiar with the topic tend to solve the task easily, so including this question helps offset the results so that differences between outcomes are more likely because of the interaction itself rather than pre-existing differences among participants. People have different preferences in methodology when it comes to learning; the sixth question allows us to identify the potential influence of learning preferences on learning efficiency when using ChatGPT. 
+
+The post-experiment questionnaire (see Appendix \ref{ChatGPTpost}) evaluates the learning progress after leveraging the resources allowed by the experiment and opinions about the resources. The questionnaires can help us better analyze and understand the experiment outcomes. It aims to gather feedback on the participants' experience using ChatGPT to solve the coding problem. The questionnaire includes questions that assess the effectiveness of ChatGPT in helping participants solve the problem, the quality of its responses, the participants' preference for the level of support from ChatGPT, and their perception of ChatGPT's effectiveness in supporting learning. Notably, the questionnaire asks for participants' perceptions of the effectiveness of ChatGPT in helping solve the problem (question two) and in helping understand the topic separately (question three). Overall, the questionnaire aims to provide insights into the practical usefulness of ChatGPT as a tool for supporting learning and problem-solving in CS education in a conclusive manner. We designed the questionnaires for the non-ChatGPT group with a similar logic.
+
+\subsection{Tasks Design}
+We designed a coding task related to threads (operating systems concept) in Java (see Appendix \ref{StarterCode}). The starter code has five threads and can output 1 to 5 individually on each thread. Participants are asked to write code that makes five threads work together and increase the same variable from 1 to 20. We designed our experimental problem with the following criteria: 1) It is not easy to get an exact solution via internet searching (including the use of ChatGPT). 2) The code required to solve the experimental problem is somewhat similar to the starter code.
+
+	
+
+
+
+
+
+
+
+\section{Results} 
+
+% \begin{tabular}{ | c | c| c| c| c|} 
+%   \hline
+%   P1 & 10 min & 30 min & Yes & No\\
+%   \hline
+% \end{tabular}
+
+\begin{table*} [th!]
+  \caption{Accumulative Time Spent to Achieve Each Milestone}
+  \label{tab:result}
+  \begin{tabular}{ccccc}
+    \toprule
+    \multirow{2}{4em}{\textbf{No.}} & \multirow{2}{8em}{\textbf{Understand the Problem}} & \multirow{2}{6em}{\textbf{Start to Code}} & \multirow{2}{14em}{\textbf{Implement the Co-operation between Threads}} & \multirow{2}{8em}{\textbf{Achieve the Expected Output}} \\
+    \\
+    \midrule
+    \midrule
+    P1 (C) & Yes & 30 min & Yes & No\\
+    \midrule
+    P2 (C)  & Yes & 26 min & Yes & No\\
+    \midrule
+    P3 (C)  & Yes & 25 min & Yes & No\\
+    \midrule
+    P4 (C)  & Yes & 6 min & Yes & Yes, 31 min total\\
+    \midrule
+    P5 (C)  & Yes & 19 min & Yes & No\\
+    \midrule
+    P6 (NC)  & Yes & 10 min & Yes & Yes, 40 min total\\
+    \midrule
+    P7 (NC) & Yes & 7 min & Yes & Yes, 33 min total\\
+    \midrule
+    P8 (NC) & Yes & 5 min & Yes & No\\
+    \midrule
+    P9 (NC) & Yes & 16 min & Yes & Yes, 39 min total\\
+    \midrule
+    P10 (NC) & Yes & 19 min & Yes & No\\
+    \bottomrule
+  \end{tabular}
+  
+  % 
+  \vspace{5pt}
+  \footnotesize{C: ChatGPT Group; NC: Non-ChatGPT Group. Participants are given 45 minutes maximum to achieve the expected output.}
+\end{table*}
+
+
+Our results can be broken down into two categories, corresponding to the experiments involving ChatGPT and not involving ChatGPT. 
+
+For the experiments done with ChatGPT, all participants involved were already familiar with ChatGPT and all of them had used it before. After conducting the experiments, 75\% of the participants expressed more knowledge about the CS concept threading in Java. Half of the participants gave a 2 out of 5 response on whether or not ChatGPT was effective in helping them figure out the problem. The same percentage of participants responded to the question of whether using ChatGPT was helpful in clearing roadblocks while they were solving the problem. 60\% of respondents said that they would rather have ChatGPT help write the code, while one person mentioned that they preferred to have ChatGPT help them understand the topic and one person had no specific opinion. 
+ 
+For the experiments done without ChatGPT, all participants mentioned that they preferred to directly search for existing solutions. 60\% of the participants mentioned that the non-ChatGPT resources that they were allowed to use were helpful, while the other 40\% didn’t have a particular strong opinion. Lastly, 60\% of the participants preferred to use ChatGPT if they were allowed to, while the rest didn’t have a strong preference. 
+
+20\% of participants in the ChatGPT group solved the coding question, and 60\% of participants in the non-ChatGPT group solved the question. Among those participants who solved the question, the average time that a ChatGPT user took was 20 minutes, much shorter than the average time taken by the non-ChatGPT group, which was 28.3 minutes. The standard deviation of time the ChatGPT user spent on the concept learning stage was 8.79 minutes, which is much larger than that of the non-ChatGPT group, which was 5.31 minutes.
+
+Participants from both groups spent a similar amount of time on understanding the problem (7.2min for ChatGPT and 5.6min for non-ChatGPT), except that one participant spent a few more minutes to finish this stage. For the concept learning stage, 3 out of 5 participants from the ChatGPT group spent over 20 minutes, compared to none from the non-ChatGPT group. The average time of completing the concept learning stage was 11.6 minutes, which represents approximately 50\% of the average time required by the experimental group. 
+
+Surprisingly, one participant (with a LLM research background) from the ChatGPT group spent the least amount of time among all participants. All participants successfully implemented cooperation between threads, but only one participant from the ChatGPT group and two participants from the non-ChatGPT group successfully completed the task, leaving the rest of the participants either fully or partially failing the initial goal.
+
+
+\section{Discussion} 
+% \{现在有 1对表格的分析，2完成度的分析，3不符合预期的结果的分析，4回答研究问题（结论是仍然可以支持？但是不是每次\textbf{}}
+% \textbf {required: interpretation, related to prior work, generalized, limitation}
+
+% \那就转化一下:
+% \从上一节的结果平铺直叙（树有5米）-》总结对比分析结果客观代表了什么（5米属于很高的树了）-〉结果并不符合原本预期，并解释分析和可能原因与限制（这种树不应该5米高啊，我们以为这种新品种会有10米，造成这个现象的可能原因xxx）-》以前的工作得到了一些结论，和我们的结果有什么联系（xxx），可以证明我们上面说的缺陷如果弥补了，将会得到不一样的更深入的insights-》回答研究问题并总结general规律（目前来看根据我们的条件，这树就会长到5米，但是我们认为如果xxx可以被xxx，那么我们对它会长出10米保持乐观态度）
+
+
+\subsection{Overall Result Interpretation}\label{interpretation}
+Based on the results, it is clear that using ChatGPT does not ensure consistently superior performance in solving coding problems related to the CS concept of threading in Java. Although 75\% of the ChatGPT group participants gained more knowledge about the concept, only 20\% managed to solve the coding question, as opposed to the 40\% success rate in the non-ChatGPT group.
+
+A comparison of the two groups' results reveals that all participants were able to understand the problem in under 10 minutes. However, the extent of task completion and the time taken to finish varied significantly. On average, non-ChatGPT users required less time to solve the coding question than their ChatGPT counterparts. This implies that ChatGPT may have slowed down the problem-solving process for some participants. Additionally, the sole participant in the ChatGPT group who successfully completed the task had prior research experience in topics related to ChatGPT, suggesting that a deeper familiarity with the tool could lead to improved results. This notion is further supported by the larger standard deviation of time spent on the concept learning stage by ChatGPT users, which suggests a close correlation between academic background and results.
+
+It is important to mention that an equal percentage of participants in both groups believed the method they were using was effective in aiding their problem-solving or overcoming obstacles. Additionally, half of the participants in the control group expressed a preference for using ChatGPT if given the opportunity. This phenomenon implies that people hold positive attitudes toward ChatGPT and believe that ChatGPT can bring benefits to their learning.
+
+Within the limited scope of our research, we can draw the following conclusions based on our results: 1) When compared to not using ChatGPT, utilizing ChatGPT does not ensure consistently superior performance in attempting coding problems associated with the CS concept of threading in Java. Nevertheless, under certain circumstances (e.g., possessing more in-depth experience with ChatGPT or being better adapted to using AI tools for supporting the creative process), we maintain a positive outlook on ChatGPT's ability to offer more efficient help. 2) From the questionnaires and participants' reflections on the experiment, most people believed that ChatGPT could be beneficial in assisting them learn unfamiliar subjects.
+
+\subsection{Unexpected Results Explanation \& Limitation}\label{Unexpected}
+Prior to conducting the experiment, we hypothesized that the ChatGPT group would outperform the control group. However, we observed that the ChatGPT group did not exhibit superior performance in terms of both time and completeness metrics. We offer several potential explanations for these unforeseen outcomes, which include the limitation of our research.
+
+\textbf{Familiarity with ChatGPT:} As previously mentioned, the only participant in the ChatGPT group who successfully completed the task had prior research experience in topics related to ChatGPT. This suggests that users who are more familiar with the AI tool might achieve better outcomes. Thus, varying levels of familiarity with ChatGPT among participants may have impacted their performance.
+
+\textbf{Low interpretability of ChatGPT:} Interpretability refers to the ability to determine the cause and effect of a machine learning model in human terms. As a language model, ChatGPT inherently lacks interpretability, posing a challenge in its application as an assistive tool. During our experiments, participants often received answers from ChatGPT without any clear indication of the source or justification. This lack of transparency can create difficulties in convincing participants of the validity of the responses, leading to repeated questioning and redundant follow-up inquiries, like what we have seen in the experiments:
+
+\textit{Q1: explain this code (copied entire public void run())(ran this twice in total)}
+
+This prolonged engagement time and negatively impacted the time performance of the ChatGPT group.
+
+\textbf{Time-consuming conversation-based interaction with ChatGPT:} ChatGPT's interaction primarily involves a dialogue with a "one-question-one-answer" format that may not provide information beyond question. Consequently, multiple rounds of questioning may be needed to obtain a final answer. Like what we saw in the experiment from one of our participants:
+
+\textit{Q2:the method join() is undefined for the type MyThread}
+
+\textit{Q3:this is wrong. I want to generate java code that uses the above class 1. start 5 threads 2. make all 5 threads work together to count together to 20. Example: (pasted sample output)}
+ 
+This form of interaction may also lead participants to ask questions that are not directly helpful in solving the problem. In contrast, conventional search engines may yield more relevant information and potentially higher efficiency. 
+
+\textbf{Individual learning styles}: The effectiveness of ChatGPT as a learning aid may be influenced by individual learning styles. Some participants may find it easier to learn and solve problems using traditional resources, while others may benefit more from AI-based tools like ChatGPT. The experiment results may reflect these diverse learning preferences.
+
+\textbf{Sample quality and grouping strategy}: The limited sample size and potential lack of diversity among participants could have affected the results. The recruitment and grouping of participants in our experiments may have been influenced by several biases. Firstly, due to our request for mass recruitment in lower division courses at UIUC being denied, we had to expand our recruitment outward, centered on our circle of friends. This led to a biased sample. Moreover, due to time and resource constraints, we had a limited number of participants, which made it challenging to achieve an even sampling and may have resulted in sampling bias. Additionally, because we conducted participant recruitment and experiments concurrently, it prevented us from completely randomizing the participant allocation of the control and ChatGPT groups, introducing another source of bias. These biases might have impacted the results and led to unexpected outcomes. A larger and more diverse participant pool might yield different outcomes, providing more robust insights into the effectiveness of ChatGPT.
+
+\textbf{Task complexity}: The complexity of the coding problem may have played a role in the experiment's results. The specific problem chosen for the experiment might not have been optimally suited to highlight the benefits of using ChatGPT. The task's focus on a single topic might have also led to biased results due to varying familiarity levels and the diverse problem-solving abilities among participants.
+
+
+\textbf{Lack of quality metrics}: The current experiments lack an evaluation of the quality of completed tasks, incorporating only two metric dimensions – completion milestones and completion time. As a result, we did not determine if utilizing ChatGPT would result in higher-quality answers. If we could provide a final quiz to quantitatively test participants' learning on the topic, or use more fine-grained rubric metrics to score participants' performance, it would allow us to quantify the quality of participants' answers and get more accurate insights.
+
+In light of these potential explanations, further research is needed to better understand the factors that influence the efficacy of ChatGPT and to explore its potential in various learning contexts. Future studies may consider addressing these limitations by increasing sample size, enhancing participant diversity, and selecting a range of coding problems with varying complexity.
+
+\subsection{Prior Work Relation}\label{Prior}
+
+In previous studies~\cite{fraiwan2023review, sobania2023analysis, tian2023chatgpt}, it was found that ChatGPT has a positive impact on both education and programming. However, these studies lacked experiments involving user interaction with ChatGPT. Our current study is a step forward in this direction. Although our experiments are limited by practical constraints, the conclusions we have drawn so far cannot be considered as perfect or in-depth. 
+But there are some similar conclusions here from previous works; prompt-engineering is a key challenge worth investigating as discussed both in this paper and by Tian et al.~\cite{tian2023chatgpt}, the effectiveness of using ChatGPT depends heavily on the quality of the prompts. We are committed to exploring how to use the most powerful interactive AI creative support tools available today to help people solve problems and learn knowledge, but there is still lots of future work to be done.
+
+
+\section{Conclusion} 
+In this paper, we investigated and experimented on the effectiveness of using ChatGPT to determine whether or not it assists individuals in solving coding problems related to unfamiliar computer science concepts. Our experiment did not yield enough evidence to fully support the claim that ChatGPT is effective in helping students solve coding problems related to an unfamiliar topic. Surprisingly, our results suggest that using ChatGPT to learn unfamiliar concepts is counterproductive and that online sources can be a more efficient method for learning and coding complex problems, albeit with certain caveats. These results suggest that current AI technologies are not yet able to completely replace human expertise in certain tasks. While ChatGPT shows promise in its ability to assist with tedious tasks\cite{noy2023experimental}, further advancements are needed in the field of AI to fully realize its potential in supporting human learning and problem-solving. It is important to acknowledge that our results are based on a limited sample size. To build on the findings of this study, future research could explore the effectiveness of ChatGPT on a larger sample size of participants. This would allow for a more comprehensive analysis of the model's performance, as well as an examination of its explanation effectiveness to other online sources. Additionally, future studies could examine the effectiveness of ChatGPT on coding problems of varying difficulty levels, from beginner to advanced levels, in order to determine its optimal use cases. Further investigation into the model's ability to generate explanations for its solutions could also be explored, as this would be particularly valuable in an educational context. Overall, these future research directions could provide additional insights into the potential of ChatGPT as a tool for assisting individuals to learn and code coding problems of varying levels of complexity.
+
+
+
+% \begin{acks}
+% To Robert, for the bagels and explaining CMYK and color spaces.
+% \end{acks}
+
+
+% References:
+\bibliographystyle{ACM-Reference-Format}
+\bibliography{sample-base}
+
+
+% \newpage
+\appendix
+% \renewcommand{\thesection}{\Alph{section}}
+% \renewcommand{\thesubsection}{\arabic{subsection}}
+\begin{appendices}
+
+\section{Questionnaires}\label{preQs}
+% \thesection{Have you ever heard of ChatGPT?}\label{preQ1}
+\subsection{Pre-experiment Questionnaire for ChatGPT Group}\label{ChatGPTpre}
+\begin{enumerate}
+    \item Have you ever heard of ChatGPT? (Y / N)
+    \item How frequently do you use ChatGPT? (Rate from 1 \textit{Never} to 5 \textit{Daily})
+    \item Do you think ChatGPT can help people learn more effectively? (Rate from 1 \textit{Strongly disagree} to 5 \textit{Strongly agree})
+    \item What is your experience level in programming? 
+        \begin{itemize}
+            \item 1 - New to programming
+            \item 2 - Has some experience, below 100-200 CS course level
+            \item 3 - Have taken 100-200 level CS course
+            \item 4 - Have taken 300-400 level CS course
+            \item 5 - Work level experience
+        \end{itemize}
+    \item How familiar are you with threading in Java? (Rate from 1 \textit{Know nothing} to 5 \textit{Super familiar})
+    \item What is your preferred way of learning new concepts?
+        \begin{itemize}
+            \item Long but detailed description/instruction
+            \item Conversation formed by short Q\&A's
+            \item Mixture of two methods
+            \item No preference
+        \end{itemize}
+    \item Has artificial intelligence provided some convenience in your daily life? (Rate from 1 \textit{Never} to 5 \textit{Always})
+\end{enumerate}
+
+\subsection{Pre-experiment Questionnaire for Non-ChatGPT Group}\label{NONChatGPTpre}
+\begin{enumerate}
+    \item What is your experience level in programming? 
+    \item How familiar are you with threading in Java?
+    \item What is your preferred way of learning new concepts?
+\end{enumerate}
+
+\subsection{Post-experiment Questionnaire for ChatGPT Group}\label{ChatGPTpost}
+\begin{enumerate}
+    \item Are you more familiar with the topic "threading in Java"? (Rate from 1 \textit{Very limited} to 5 \textit{Fully understood})
+    \item Was ChatGPT effective in helping you solve the problem? (Rate from 1 \textit{Very limited} to 5 \textit{Super helpful})
+    \item Was the information given by ChatGPT helpful in clearing any misunderstandings/roadblocks in your problem solving approach? (Rate from 1 \textit{Very limited} to 5 \textit{Super helpful})
+    \item Do you prefer to let ChatGPT write all the code or only give enough information to help you understand the problem?
+        \begin{itemize}
+            \item Help write the code
+            \item Help understand the topic
+            \item No preference
+        \end{itemize}
+    \item Did your opinion about ChatGPT's effectiveness on learning change? (Positively / Negatively)
+\end{enumerate}
+
+\subsection{Post-experiment Questionnaire for Non-ChatGPT Group}\label{NONChatGPTpost}
+\begin{enumerate}
+    \item Were the resources you referred to effective in helping you solve the problem? (Rate from 1 \textit{Not effective} to 5 \textit{Super effective})
+    \item Do you prefer to directly search for possible existing solutions or the information to help you learn the topic and solve the problem?
+        \begin{itemize}
+            \item Search for the answer
+            \item Help understand the topic
+            \item No preference
+        \end{itemize}
+    \item If given the permission to use ChatGPT, will you prefer to seek help from ChatGPT more than other resources? (Rate from 1 \textit{Strongly disagree} to 5 \textit{Strongly agree})
+\end{enumerate}
+    
+
+% \newpage
+\section{Experimental Problem and Starter Code}\label{StarterCode}
+
+The starter code includes two classes: MyThread.java and Starter.java.
+
+MyThread.java
+\begin{lstlisting}[ language=Java]
+package example;
+// This is the thread class used to Run() our own logic.
+// Related concepts: Thread, Runnable
+public class MyThread implements Runnable{
+    private Thread thread;
+    private int name;
+    private int count = 1;
+    public MyThread(int name) {
+        this.name = name;
+    }
+    // This is the function that will be run by this thread.
+    @Override
+    public void run() {
+        while (count <= 5) {
+            // Wait 1s before any action. (can make the output slowdown)
+            // Related concepts: sleep in thread, Exception (not related to the problem)
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+            // Counting numbers (print then count+1)
+System.out.println("This is thread #" + Thread.currentThread().getName() + " counting: " + count++);}
+}
+    public void start() {
+        if (this.thread == null) {
+            this.thread = new Thread(this, String.valueOf(this.name));
+            // After this thread start, you can simply believe it will call Run() once.
+            this.thread.start();
+        }
+    }
+}
+\end{lstlisting}
+
+% \newpage
+Starter.java
+\begin{lstlisting}[ language=Java]
+package example;
+public class Starter {
+    public static void main(String[] args) {
+        // Create 5 threads and start them.
+        for (int i = 1; i <= 5; i++) {
+            MyThread thread1 = new MyThread(i); // Hint: can those threads share something?
+            thread1.start();
+        }
+}
+/*        * Problem:
+            The example shows each thread counting their own 1~5.
+        TODO: Can you modify the code to make them count together from 1~20?
+        One possible output of the modified program (there can be different execution outputs):
+        This is thread #2 counting: 1
+        This is thread #4 counting: 2
+        This is thread #5 counting: 3
+        ...
+        This is thread #5 counting: 18
+        This is thread #1 counting: 19
+        This is thread #3 counting: 20
+         */
+/** Here are some ideas/concepts you can look into and leverage to solve the problem:
+    Related concepts: Shared variable/object between threads, Synchronized, concurrent write/read
+    Ideas: 1. From example, you know that threads can count their own numbers, but how could threads share the number they are counting?
+        2. If multiple threads are modifying the same variable concurrently, what may go wrong?
+        3. You do not need to know every detail of some notions to solve the problem.
+     */
+\end{lstlisting}
+
+\end{appendices}
+
+% \subsection{Top Three Ideas}
+
+% \begin{enumerate}
+%   \item \textbf{DATA} - Wikipedia has published data about contributions and active users over the years. We can obtain the activity level of Wikipedia in different regions and languages at different times. Analyzing the tables and charts shown on Wikipedia can be a good starting point. We can also obtain data of regional economies and populations from several official websites. By comparing these data, we can study the relationship between Wikipedia activity and factors such as regions, languages, and economic conditions. It might be interesting to study if users in more developed regions make more contributions to the open community than users from relatively less developed regions, and we can study why users from certain regions or speaking certain languages are more active than others.
+  
+% \textit{\textbf{Reference Papers:}}
+
+% \cite{forte2005} Forte, Andrea, and Amy Bruckman. "Why do people write for Wikipedia? Incentives to contribute to open–content publishing." Proc. of GROUP 5 (2005): 6-9. 
+
+% \cite{Rafaeli2008} Rafaeli, Sheizaf, and Yaron Ariel. "Online motivational factors: Incentives for participation and contribution in Wikipedia." Psychological aspects of cyberspace: Theory, research, applications 2.08 (2008): 243-267. \url{https://doi.org/10.1017/CBO9780511813740.012}
+
+% Database link: \url{https://stats.wikimedia.org/EN/Sitemap.htm} 
+
+
+
+  
+%   \item \textbf{EXPERIMENTS} - ChatGPT, an expansive language model developed by OpenAI, is equipped to respond to a broad spectrum of natural language processing (NLP) questions. Having been trained on an extensive corpus of text data, ChatGPT can generate human-like responses to a wide range of queries. Notably, our observations indicate that individuals use ChatGPT in diverse ways, particularly when seeking assistance with comprehending intricate code. We have observed variations in the efficacy of ChatGPT in producing results for different individuals. In light of these observations, we will conduct experiments to explore how computer science students can utilize ChatGPT to facilitate their understanding of difficult code and gather feedback from those students. Subsequently, we will engage in research to investigate the different patterns that emerge in how students interact with ChatGPT and the effectiveness of these interactions. This research is intended to inform the use of ChatGPT as an educational tool and shed light on its potential to support computer science students in their learning endeavors.
+  
+% \textbf{\textit{Reference Papers:}}
+
+% \cite{frieder2023} Frieder, Simon, et al. "Mathematical capabilities of ChatGPT." arXiv preprint arXiv:2301.13867 (2023). \url{https://doi.org/10.48550/arXiv.2301.13867}
+
+% \cite{kung2023} Kung, Tiffany H., et al. "Performance of ChatGPT on USMLE: Potential for AI-assisted medical education using large language models." PLOS Digital Health 2.2 (2023): e0000198. \url{https://doi.org/10.1371/journal.pdig.0000198}
+
+% \cite{lund2023} Lund, Brady D., and Ting Wang. "Chatting about ChatGPT: how may AI and GPT impact academia and libraries?" Library Hi Tech News (2023). \url{https://doi.org/10.1108/LHTN-01-2023-0009}
+
+% \cite{zhai2022} Zhai, Xiaoming. "ChatGPT user experience: Implications for education." \url{https://www.researchgate.net/publication/366463233_ChatGPT_User_Experience_Implications_for_Education} 
+
+% \vspace{12pt}
+
+
+%   \item \textbf{EXPERIENCE} - By the People is a crowdsourcing project launched by the Library of Congress in 2018. It invites public volunteers to transcribe, review, and tag digitized pages from the Library’s collections. On the one hand, since Optical Character Recognition (OCR) software is common and accessible, we wonder whether this kind of tool can be integrated into the crowdsourcing process and make a positive impact. On the other hand, we are also interested in researching the volunteers: their social backgrounds, their motivations, and the challenges they might have. We will participate in this project as participant observers to answer the above research questions, identify potential problems and suggest solutions.
+  
+% Project Link of Library of Congress - By the People \url{https://crowd.loc.gov/}
+
+% \textit{\textbf{Reference Papers:}}
+
+% \cite{hyning2022} Van Hyning, V., Algee, L., Jones, M., Osborn, C., Owens, T., Seroka, L., \& Shelton, A. (2022). By the People Crowdsourcing Datasets from the Library of Congress. Journal of Open Humanities Data, 8, 5. \url{http://doi.org/10.5334/johd.67} 
+
+% \cite{holley2009} Rose Holley. 2009. How Good Can It Get? Analysing and Improving OCR Accuracy in Large Scale Historic Newspaper Digitisation Programs. D-Lib Magazine 15, 3/4 (2009). \url{https://doi.org/10.1045/march2009-holley}
+
+% \cite{Muhlberger2014} Günter Mühlberger, Johannes Zelger, and David Sagmeister. 2014. User-driven Correction of OCR Errors: Combining Crowdsourcing and Information Retrieval Technology. In Proceedings of the First International Conference on Digital Access to Textual Cultural Heritage (DATeCH ’14). ACM, New York, NY, USA, 53–56. \url{https://doi.org/10.1145/2595188.2595212}
+
+% \cite{Traub2018} Myriam C. Traub, Thaer Samar, Jacco van Ossenbruggen, and Lynda Hardman. 2018. Impact of Crowdsourcing OCR Improvements on Retrievability Bias. In Proceedings of the 18th ACM/IEEE on Joint Conference on Digital Libraries (JCDL '18). Association for Computing Machinery, New York, NY, USA, 29–36. \url{https://doi.org/10.1145/3197026.3197046}
+
+% \cite{Osborn2021} Carlyn Osborn. 2021. Summer 2021 Volunteer Survey: What Motivates ‘By the People’ Volunteers? \url{https://blogs.loc.gov/thesignal/2021/11/btp-volunteer-survey/?loclr=blogsi}
+
+% \subsection{Other Seven Ideas}
+
+
+% \item DATA - We would investigate whether and how specific prize challenges spur the innovation process. For example, Leetcode and Kaggle both have reward systems that encourage users to perform some sort of tasks. Researching how exactly users are motivated would be interesting.
+
+% \item EXPERIMENTAL - Create some tasks that require a certain amount of time to complete, publish these tasks on a crowdsourcing platform and set different rewards for each task. Observe the effect of different rewards on the quality/efficiency of task completion.
+
+% \item DATA - A previous group of students in CS 565 did a project called "The Influence of Design Representations on the Generation of Feedback": \url{https://github.com/VinithaRavi/cs-565-HCI-/blob/master/CS565_Team-6_Final-Project-Report.pdf} \cite{Alamri2017}. Their research was about how different design representations would influence the feedback that designers got. They crawled for data of design representations on Reddit and categorized it. Our group could possibly do the same
+
+% \item EXPERIENCE - Go to MTurk to try out the requests, and publish some questionnaires to classmates in CS565 who pick the experience project too (as other participants).
+
+% \item EXPERIENCE -  As part of an Experience project, we would participate and contribute to the classification of the Wildwatch Burrowing Owl project on zooniverse. By participating in the project we would take part as a participant observer, analyze some problems that happened in the project and address potential solutions to solve these issues.
+
+% \item DESIGN - Our team attempts to propose a creativity support tool that can help users to enhance their graphic designs. The idea is to distribute the users’ design to a specific group of people, then use a tool that can track viewers’ eye motions so that the tool can report on which part of the design attracts viewers’ attention most and which part is the least attractive one. Next, the CST will generate a report based on the data collected and give feedback to the user.
+
+% \item EXPERIENCE -  As part of an Experience project, we would participate and contribute to the classification of the Killer Whale Count project on zooniverse. By participating in the project we would take part as a participant observer, analyze some problems that happened in the project and address potential solutions to solve these issues.
+
+% \end{enumerate}
+
+
+
+
+
+% \section{Methodology for Collaboration}
+% \graphicspath{ {./images/} }
+
+% 2/10/2023 - 8pm to 8:28pm
+% \begin{itemize}
+%   \item We chose to use Google Docs to list down our ideas. Decided to have every group member investigate the pros and cons of each
+%   major project category that is stated in the Projects category on Canvas.
+%   \item \includegraphics[scale=0.16]{images/feb10.png} 
+% \end{itemize}
+
+% \noindent{2/12/2023 - 1:30pm to 2:23pm}
+% \begin{itemize}
+%   \item Met and decided the categories to focus on. Every group member would find
+%   3 ideas that relate to one of the following categories: Experimental, Experience, Data.
+% \end{itemize}
+
+% \noindent{2/15/2023 - 3:45 to 4:45pm}
+% \begin{itemize}
+%   \item Every group member shared out their ideas, and voted for a preliminary top 3
+%   and top 10. We also had links to websites with projects that needed to be reviewed, so we decided to have everyone adjourn for that, and get together next meeting to discuss only these ideas from the links.
+%   \item \includegraphics[scale=0.16]{images/feb15.png}
+% \end{itemize}
+
+% \noindent{2/17/2023 - 8pm to 9pm}
+% \begin{itemize}
+%   \item The final list was decided on Google Docs, and everyone agreed to work
+%   asynchronously through messaging and Google Docs to finish the writeup for this stage.
+%   \item \includegraphics[scale=0.16]{images/feb17.png}
+% \end{itemize}
+
+
+
+
+
+
+
+
+
+\end{document}
+\endinput
+%%
+%% End of file `sample-authordraft.tex'.

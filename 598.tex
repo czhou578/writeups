@@ -1,0 +1,330 @@
+
+% VLDB template version of 2020-08-03 enhances the ACM template, version 1.7.0:
+% https://www.acm.org/publications/proceedings-template
+% The ACM Latex guide provides further information about the ACM template
+
+\documentclass[sigconf, nonacm]{acmart}
+\usepackage{multirow}
+\usepackage{graphicx}
+%% The following content must be adapted for the final version
+% paper-specific
+\newcommand\vldbdoi{XX.XX/XXX.XX}
+\newcommand\vldbpages{XXX-XXX}
+% issue-specific
+\newcommand\vldbvolume{14}
+\newcommand\vldbissue{1}
+\newcommand\vldbyear{2020}
+% should be fine as it is
+\newcommand\vldbauthors{\authors}
+\newcommand\vldbtitle{\shorttitle} 
+\newcommand{\minihead}[1]{{\vspace{.45em}\noindent\textbf{#1.} }}
+% leave empty if no availability url should be set
+\newcommand\vldbavailabilityurl{URL_TO_YOUR_ARTIFACTS}
+% whether page numbers should be shown or not, use 'plain' for review versions, 'empty' for camera ready
+\newcommand\vldbpagestyle{plain} 
+
+\begin{document}
+\title{Vision Language Distillation by Clustering BiTrajectory Matching}
+
+%%
+%% The "author" command and its associated commands are used to define the authors and their affiliations.
+\author{Yifan Shen, Erqian Gao, Xinshuo Lei, Colin Zhou}
+\affiliation{University of Illinois Urbana-Champaign
+}
+\email{{yifan26, erqian2, xinshuo3, colinz2}@illinois.edu}
+
+
+%%
+%% The abstract is a short summary of the work to be presented in the
+%% article
+\begin{abstract}
+Dataset distillation is often used to create compact datasets that can be used to achieve similar training performance, making it a good choice for addressing the challenges of data storage cost and training cost. However, existing distillation method are generally time-intensive and computationally expensive, especially when applied to vision-language tasks. To address this challenge, we propose the Clustering BiTrajectory Matching method, which accelerates existing distillation techniques by 8 times through two innovative strategies: a
+clustering-based sample selection and a bitrajectory optimization
+approach. The Clustering BiTrajectory Matching method is able to achieve good accuracy in a multi-modal setting while requiring lower computation resources and emphasizing efficiency in pre-training. We evaluate the proposed method on the Flickr8k dataset. We show that our method is able to achieve better efficiency (less iteration to achieve target accuracy), while outperforming other coreset selection methods.
+\end{abstract}
+
+\maketitle
+\section{Introduction}
+In the burgeoning field of big data and artificial intelligence, dataset distillation has emerged as a crucial technique for efficiently summarizing large datasets while preserving their essential informational content. This concept becomes particularly pertinent in the realm of vision-language models. These models, which integrate visual and textual data, are at the forefront of advancements in multimodal machine learning, yet they pose unique challenges due to the complexity and volume of the data involved. Dataset distillation has been introduced as a method to remedy some of these issues. Also, distillation on multi-model datasets has been shown in cases to be efficient for data systems, especially in storage and training.
+
+Traditional dataset distillation methods, as explored by \cite{wang2018dataset}, have primarily focused on image classification tasks. These approaches are adept at distilling data into class-specific information, a strategy that works well when dealing with discrete and well-defined categories. However, the landscape of vision-language models is markedly different. In these models, the data does not neatly fall into discrete classes. Instead, it encompasses a rich tapestry of cross-modal interactions, where the visual elements often coexist with and are influenced by textual descriptions. This complexity is further compounded by the high-resolution nature of the images and the non-differentiable characteristics of text, posing significant challenges for traditional distillation techniques.
+
+A key issue with existing dataset distillation approaches, including those applied to vision-language models, is the extensive duration required for the distillation process. Current methods, while effective in reducing the size of datasets and retaining essential information, are often time-intensive and computationally expensive. This is a critical limitation, especially considering the rapid pace of development in AI and the need for efficient data processing. 
+
+The prolonged training times observed in methods such as MTT \cite{G.Cazenavette} highlight the need for a more efficient approach. These methods can take upwards of 24 hours or more for distilling information into a manageable number of images per class, a duration that is often impractical in fast-paced research and development environments. The inefficiencies largely stem from the sampling strategies used for selecting original images and the goals set for optimization during the distillation process. In the context of vision-language dataset distillation, these challenges are amplified. The datasets are not only larger and more complex but also contain nuanced interactions between the visual and textual components. The traditional approach of distilling data for discrete classes does not apply here, necessitating a novel strategy that can handle the intricacies of multimodal data.
+
+In this paper, we introduce an innovative Vision-Language Dataset Distillation method. Our method diverges from the norm by not relying on discrete class information. Instead, it focuses on the co-distillation of visual and textual elements, capturing their interdependencies effectively. We also explore the question of whether we can build a distillation-based system that can perform multi-modal tasks with good accuracy, while requiring lower computation resources and emphasizing efficiency in pre-training. The multi-model task that we are specifically focusing on is retrieving images from a dataset based on semantic text input. We propose the Clustering BiTrajectory Matching method. It significantly accelerates the dataset distillation process by 8 times through two innovative strategies: a clustering-based sample selection and a bitrajectory optimization approach. The clustering-based selection ensures a more representative and evenly distributed sample set, overcoming the limitations of random sampling that often leads to unbalanced and inefficient training.
+
+Our method's effectiveness is not just theoretical but is demonstrated through extensive experiments and comparative evaluations. Clustering BiTrajectory Matching not only significantly reduces the number of iterations required for dataset distillation but also does so without compromising the quality of the distilled data. In summary, our contributions of this paper are as follows:
+\begin{itemize}
+    \item We propose Clustering BiTrajectory Matching, a new approach to dataset distillation that focuses on the co-distillation of visual and textual elements. 
+    \item Our method accelerates distillation training time on 8 times by clustering and bitrajectory matching compared to the previous method like MTT\cite{G.Cazenavette}. It enables a more representative and efficient training.
+\end{itemize}
+
+The remainder of this paper is structured as follows. In Section 2, we introduce a range of related works that provide context for our research. In Section 3, we offer a concise overview of Clustering BiTrajectory Matching and delve into the specific formulations of our approach. Section 4 talks about the experiments of our models. Section 5 is about the ablation studies. And we discuss and conclude the paper with a summary in Sections 6 and 7.
+
+\section{Related Work}
+\subsection{Clustering-based selection}
+Coreset selection is the process of selecting a subset of data based on some specific metrics. \cite{lapedriza2013sample} attempted to find training samples that are more important by measuring the benefits gained from model training on each data sample. \cite{toneva2018forgetting} observed that some samples are more prone to being forgotten, making them more important than unforgettable samples which can be removed without hurting generalization. Recently, coreset selection has also been applied to continual learning \cite{aljundi2019continual}, \cite{wiewel2021condensed} and active learning \cite{sener2017active}. While coreset selection methods are very useful in reducing the data size and saving computation resources, it usually face limitations like hidden bias and models not being able to extract rich information from a small subset of original samples. The coreset selection method we used is based on clustering and selecting cluster representative, which ensures the selected subset is evenly distributed and represent most characteristics of the original dataset.
+
+
+\subsection{Dataset Distillation}
+Dataset distillation is implemented by synthesizing samples of images that are guided by various optimization goals. \cite{wang2018dataset} introduced the concept of dataset distillation from the optimization and update synthetic images perspectives . Other works also employ a variety of optimization targets including matching training gradients\cite{B.Zhao} \cite{Siamese}, embedding distributions \cite{K.Wang}, and training trajectories of original images \cite{G.Cazenavette}. \cite{Nguyen}developed a distributed meta-learning framework and used kernel approximation methods. HaBa leveraged data hallucination networks to construct some base images
+and improve the representation capability of distilled datasets \cite{Liu}. Some methods use generative models to complete
+dataset distillation, such as GLaD \cite{Deepgen}, which
+compresses datasets into latent variables in the feature space and then do data synthesis by using decoders. DiM \cite{Dim}transfers knowledge by distilling datasets into generative models.
+
+\subsection{Cross-modal Retrieval}
+Cross-modal image-text retrieval, a complex task involving the integration of information from diverse modalities, has witnessed significant developments in recent works. The overarching challenge is to overcome the diverseness gap between models by establishing transformation functions that project multimodal data into a shared representation space. The retrieval process encompasses two critical steps, extraction of uni-modal features and the alignment of multi-modal features, with the former being the initial and crucial step in an ITR system.
+
+Several techniques such as visual semantic embedding and cross-attention are employed for feature extraction in previous works. For instance, Visual Semantic Embedding (VSE) emerges as the most direct method for independently encoding uni-modal features. Developments on VSE focused on both data and loss functions: \cite{hu2021learning} applied noisy labels to mitigate noisy samples and correlate distinct modalities simultaneously; two previous works implemented intersections in a shared embedding space to rank samples from the different modalities \cite{chun2021probabilistic} \cite{wang2018learning}; introduced a novel loss algorithm designed to regulate the distribution of data within the embedding space \cite{zheng2020dual}. The other approach, Cross-attention methods, are rooted in the transformer methods, which by acquire contextual knowledge between modalities to enhance performance. A notable example is the method proposed by \cite{cui2021rosita}. Their system simultaneously integrates cross- and intra-modality knowledge within a unified scene, enhancing subsequent feature alignment tasks. \\
+Feature alignment is also an crucial step in the retrieval process, which is essential for calculating similarity between multi-modal data to achieve effective retrieval. Local alignment and global alignment are the two primary methods for this step. The global alignment method employs a global feature learning model \cite{faghri2017vse++} \cite{jia2021scaling}. However, it is more likely to ignore fine-grained information hidden beneath the surface of images and texts. Local alignment, on the other hand, usually correspond patch-level information in images with word information in text. To explore semantic region/patch word correspondences, it often utilizes ordinary attention mechanisms \cite{kim2021vilt} \cite{chen2020uniter}. A burgeoning approach is hybrid, combining the benefits of both former methods. \cite{ji2021step} applied a progressive strategy to their system, allowing it to achieve local alignment at fragment level and global alignment at context level.
+
+
+
+\section{Method}
+In our research, we address the challenge of low training efficiency in dataset distillation tasks by introducing a novel approach, Clustering BiTrajectory Matching. This innovative methodology is centered on enhancing the training process's stability and robustness through an initial clustering strategy, focusing on representative original images. The core idea is to distill a large-scale dataset, comprising pairs of images and text, into a more compact form. The primary objective is to retain the crucial information from the original dataset that is essential for effectively training vision-language models. Our approach is distinct in its ability to balance the need for efficiency with the retention of critical data qualities, ensuring that the distilled dataset remains highly relevant and useful for VLM training. The total structure is shown at Figure \ref{Diagram}.
+
+\begin{figure*}[ht]
+\centering
+\includegraphics[width=1.0\textwidth]{Diagram.jpg} 
+\caption{Structure of Clustering BiTrajectory Matching}
+\label{Diagram}
+\end{figure*}
+
+\subsection{Preliminaries}
+We consider the challenge of dataset distillation in the large-scale dataset $\mathcal{T}=\left\{\left(x_i, y_i\right)\right\}_{i=1}^N$, where $x_i$ denotes an image, and $y_i$ represents its associated text descriptions, potentially comprising multiple elements $\left\{y_{i1}, y_{i2}, \ldots, y_{iK}\right\}$. The objective is to distill this dataset into a significantly smaller, yet information-rich dataset ${\mathcal{S}}=\left\{\left(\hat{x}_j, \hat{y}_j\right)\right\}_{j=1}^M$ ($M \ll N$) for efficient training of Vision-Language Models.
+
+We address this by leveraging both dataset clustering and synthetic data generation techniques. The model comprises a vision encoder $f\left(\cdot ; \theta_{\text{img}}\right)$ and a language encoder $g\left(\cdot ; \theta_{\text{txt}}\right)$. The model is trained to minimize a similarity loss function that aligns image and text embeddings:
+\begin{equation}
+\theta^* \approx \underset{\theta}{\arg \min } \frac{1}{N} \sum_{i=1}^N \ell\left(f\left(x_i ; \theta_{\text{img}}\right), g\left(y_i ; \theta_{\text{txt}}\right)\right).
+\end{equation}
+
+Our proposed approach involves generating a surrogate dataset $\mathcal{S}=\left\{\left(\boldsymbol{x}_s^i, y_s^i\right)\right\}_{i=1}^{|\mathcal{S}|}$, where $|\mathcal{S}| \ll|\mathcal{T}|$, through an optimization-based synthetic pipeline. The process aims to align the surrogate set $\mathcal{S}$ with the original dataset $\mathbf{T}$, using objectives $\phi(\cdot)$, and is formulated as:
+\begin{equation}
+\mathcal{S}^*=\arg \min _{\mathcal{S}} \mathbf{D}\left(\phi(\mathcal{S}), \phi(\mathbf{T})\right),
+\end{equation}
+where $\mathbf{D}$ represents the matching metric. This metric can be based on training gradients or embedding features, with objectives expressed as:
+\begin{equation}
+\mathcal{S}^*=\arg \min _{\mathcal{S}} \mathbf{D}\left(\nabla_\theta \mathcal{L}\left(\mathcal{M}_\theta(\mathcal{A}(\mathcal{S}))\right), \nabla_\theta \mathcal{L}\left(\mathcal{M}_\theta(\mathcal{A}(\mathbf{D}))\right)\right),
+\end{equation}
+
+The matching objectives are calculated against a mini-batch of original images from $\mathcal{T}$, aligning either gradients or embedding features at different training stages. This iterative process, constituting the inner optimization loop, is coupled with an outer loop that introduces diversity through different random $\mathcal{M}_\theta$ models.
+
+Our approach not only aims to retain the model's performance on the original $\mathcal{T}_{\text{test}}$ but also explores the efficiency of the distillation process. We introduce a bidirectional matching strategy that balances the trade-off between training efficiency and the fidelity of the surrogate dataset to the original dataset, thus optimizing the distillation process for vision language models.
+
+\subsection{Clustering and Training Efficiency}
+
+\textbf{Training Efficiency}
+During distillation, the condensation of knowledge is achieved through aligning a subset of original images within a specified parameter space. Due to memory constraints, it becomes imperative to select a subset of original images to construct a mini-batch, which is stated in the previous sections. The efficiency of training can be notably influenced by the choice of these original images. Recent literature usually adopts the decision of random sampling methods \cite{zhao2020dataset} \cite{kim2022dataset}. Moreover, the efficacy of training also depends on the selection of matching objectives. While a multitude of objectives has been various studies on objectives, most prior studies focused on a singular objective among the proposed alternatives \cite{kim2022dataset}. Hence, we endorse the approach for assembling a mini-batch characterized by both uniform and diverse distributions. This strategy is proposed in tandem with the optimization of matching objectives, aimed at enhancing the efficiency of dataset distillation.
+
+
+\textbf{Clustering}
+To enhance stability and efficiency in the following step, we consider strategies to generate a representative mini-batch of original images. The selected images must follow two principles: being strongly representative and unbiased. First, the selected images must honestly represent the samples within its class. Second, the selected images must be evenly distributed to prevent bias in matching targets for distillation. \\
+To satisfy these requirements, we employ a clustering method for the selection of representative original images. We utilize the famous K-Means algorithm which was invented and utilized in many impressive previous works\cite{forgy1965cluster} \cite{arthur2007k} \cite{Omer_fast-pytorch-kmeans_2020} for the considerations of uniform sub-cluster size and distribution. \\
+The objective of the K-Means algorithm is to minimize the euclidean distance between data points within a given dataset and the centroids of their respective clusters. The euclidean distance  is computed through the summation of squared distances across all dimensions of a given data point. This computation is formalized by the following mathematical expression:
+\begin{equation*}
+\text{Distance}(x, y) = \sqrt{\sum_{i=1}^{d}(x_i - y_i)^2}
+\end{equation*}
+For a given cluster, the K-Means algorithm maintains a objective score for optimization. The score is calculated upon the sum of aggregate Euclidean distances between every data point in a cluster and the centroid representing that cluster. The objective is to minimize this computed score, represented in the following expression:
+\begin{equation*}
+K = \sum_{i=1}^{n} \sum_{c=1}^{K} w_{ij} \cdot \sqrt{(x_i - \mu_c)^2}
+\end{equation*}
+In this formula, K is the objective score; n is the number of data points; K stands for the number of clusters; 
+\begin{math}
+w_{ij}
+\end{math}
+is a indicator variable that values 1 only if 
+\begin{math}
+x_{i}
+\end{math}
+is in cluster j and 0 in other cases.\\
+Our clustering methodology involves a two-step process. Initially, we employ ResNet-50 to extract features from each image within our training dataset. This convolutional neural network, pretrained on an dataset comprising over a million images, yields a feature representation for each image in the form of an array. These feature representations are  aggregated with each other to form a comprehensive two-dimensional array. Subsequently, the K-Means algorithm is applied to this two-dimensional array, facilitating the images into distinct clusters. The centroid samples derived from each cluster serve as the reference images for distillation. This approach is designed to ensure that sub-clusters exhibit consistent information.
+
+
+
+\subsection{Bidirectional Distillation}
+The clustering methods described above, the next step is the vision language co-distillation. 
+Our method innovates in the field of dataset distillation for vision-language models (VLMs). Unlike traditional coreset selection methods, we introduce a framework that generates an optimized distilled dataset ${\mathcal{S}}$, significantly reducing storage and computational demands while enhancing model performance. This approach \cite{cazenavette2022distillation} leverages the concept of matching training trajectories to align the distilled dataset's parameter trajectory with that of the original full dataset $\mathcal{S}$.
+ 
+
+\textbf{Pre-Training} Our method leverages the concept of dataset distillation to construct an optimized synthetic dataset ${\mathcal{S}}$, which closely mimics the parameter trajectory of the full dataset $\mathcal{T}$. This approach is rooted in the trajectory matching technique, which aligns the parameter trajectory of the distilled dataset with that of the original dataset. We achieve this through a two-stage process. First we generate expert trajectories $\{\tau\}$ by training multiple Vision-Language Models on $\mathcal{T}$ for $T$ epochs. Each trajectory $\tau=\{\theta_t^*\}_{t=0}^T$ represents the sequence of parameters obtained during training. This is crucial as it sets the benchmark for our distillation process. Second, student models are then trained on the distilled dataset ${\mathcal{S}}$ using the same learning scheme as the expert models. The distilled dataset is iteratively refined to minimize the bi-trajectory matching loss between the parameters of the student models and the expert trajectories.
+
+\textbf{Bidirectional Contrastive Loss} Our approach employs bidirectional contrastive loss as the primary training mechanism for both expert and student models in vision-language modeling. This method, grounded in the work of Radford et al. (2021), effectively learns shared image-text representations. For a batch of $n$ image-text pairs $\{(x, y)\}$ from the real dataset $\mathcal{T}$ or the synthetic distilled dataset ${\mathcal{S}}$, the encoders $f\left(x ; \theta_{\text{img}}\right)$ and $g\left(y ; \theta_{\text{txt}}\right)$ are jointly optimized. The cosine similarity between encoded image $x$ and text $y$ is maximized for correct pairs and minimized for incorrect ones. The cosine similarity, denoted as $\alpha(x, y)$, and the contrastive loss are defined as follows:
+
+\begin{equation}
+\alpha(x, y)=\frac{\langle f(x ; \theta_{\mathrm{img}}), g(y ; \theta_{\mathrm{txt}})\rangle}{\big\|f(x ; \theta_{\mathrm{img}})\big\|\big\|g(y ; \theta_{\mathrm{txt}})\big\|}
+\end{equation}
+
+
+\begin{equation}
+\sum_{(x, y) \text{ in batch}}\left(\log \frac{\exp(\alpha(x, y))}{\sum_{y'} \exp(\alpha(x, y'))}+\log \frac{\exp(\alpha(x, y))}{\sum_{x'} \exp(\alpha(x', y))}\right)
+\end{equation}
+
+
+\textbf{Parameter Matching and Optimization} Our method advances the dataset distillation process through a sophisticated parameter matching and optimization strategy. This involves two key components: Bi-Trajectory Matching Loss and Long-Range Parameter Matching. This loss function calculates the accumulated discrepancy between parameter trajectories of student models trained on the distilled dataset ${\mathcal{S}}$ and expert models trained on the full dataset $\mathcal{T}$. It is formulated as:
+
+\begin{equation}
+\ell_{\text{trajectory}} = \frac{\left\|\hat{\theta}_{\text{img}, s+\hat{R}} - \theta_{\text{img}, s+R}^*\right\|_2^2}{\left\|\theta_{\text{img}, s}^* - \theta_{\text{img}, s+R}^*\right\|_2^2} + \frac{\left\|\hat{\theta}_{\text{txt}, s+\hat{R}} - \theta_{\text{txt}, s+R}^*\right\|_2^2}{\left\|\theta_{\text{txt}, s}^* - \theta_{\text{txt}, s+R}^*\right\|_2^2}
+\end{equation}
+
+The distillation process also entails long-range matching of training dynamics. We start by sampling parameters from expert trajectories at a random timestep $\theta_t^*$, using these to initialize student parameters $\hat{\theta}_t$. An upper limit $T^{+}$ on $t$ ensures focus on the more informative early parts of expert trajectories. The student network is then updated through $N$ gradient descent steps, formulated as:
+
+\begin{equation}
+\hat{\theta}_{t+n+1} = \hat{\theta}_{t+n} - \alpha \nabla \ell\left(\mathcal{A}\left(\mathcal{D}_{\text{syn}}\right); \hat{\theta}_{t+n}\right)
+\end{equation}
+where $\mathcal{A}$ denotes the differentiable augmentation technique, and $\alpha$ is the learning rate.
+
+The distilled dataset ${\mathcal{S}}$ is iteratively refined through these updates, with $\alpha$ playing a crucial role in automatically adjusting the student and expert updates. The optimization of $\alpha$ is performed using Stochastic Gradient Descent with momentum.
+
+
+\section{Experiment and Evaluation}
+In this section, we will explain our experiment setup, including the datasets we used, our implementation details, and our technique for evaluating our experiment.
+
+\subsection{Dataset and Experiment Setup}
+\textbf{Dataset} We utilized the Flickr8k dataset which is a dataset that is widely used in image retrieval tasks. We obtained the closest matches by utilizing cosine similarity. We used $R @ K$ (for $K \in\{5,10\}$ ) as evaluation metric to compute the fraction of times the correct result appears among the top $\mathrm{K}$ items. Each image is paired with a total of five captions. Pytorch was our preferred framework for implementing our models.
+
+\textbf{Architectures} We used the model ResNet-50 to extract features from each image. It is a pretrained 50-layer convolutional neural network. Then, we applied the scikit-learn's k-means function on the images based on the extracted features. After the clustering is done, we used pretrained and trainable ResNet-50 \cite{brockResNet} as the image backbone as well as the pretrained and frozen BERT \cite{DevlinBERT} as the text backbone for distillation. None of the two encoders were exposed to the other modality. Each encoder is followed by a linear projection layer using uniform initialization \cite{Kaiming}. 
+
+
+\textbf{Implementation}
+We trained on a single Nvidia V100 GPU. We initialize a trainable learning rate $\alpha$ at 0.1 for student network training. We also used stochastic gradient descent with a 0.8 momentum. The learning rate for updating a distilled image pixels and distilled text embeddings are 1000. We applied k-means with k equal to 15.
+
+\textbf{Initialization}
+We initialized the distilled set with selected real samples. We select n C (100.200, 500, 1000.image-text pairs from the original dataset by clustering, with images at 224 x 224 resolution, and 768-dimensional sentence embeddings that was retrieved through the pretrained BERT. 
+
+\subsection{Main Result}
+As shown in \autoref{tab:freq}, we observe that our method is able to outperform the best alternative coreset selection method. Moreover, the relative improvement of our model to the baseline increases when there are fewer training pairs used.
+
+We also observe that there is little variation in performance across each of the coreset selection baselines, with no baseline model significantly and consistently outperforming others. This observation suggests the potential limitation of the coreset selection methods in a multimodal setting. On the other hand, our model is more optimized for vision-language alignment settings due to the utilization of distillation.
+
+Another key observation is that our method significantly reduced the dataset size. As shown in the table, after distillation, clustering, and representative selection, the ratio of the dataset to the training set is between 0.63\% to 3.45\%, which demonstrates that our method did achieve our initial goal of minimal storage.
+
+\begin{table*}[!h]% h asks to places the floating element [h]ere.
+  \caption{Baseline comparisons on Flicker8K. \textnormal{We compare our method (distillation + clustering) to three corset selection methods: random selction of training examples (\textbf{R}), Hedring (\textbf{H}), and Forgetting (\textbf{F}) \cite{toneva2018empirical}. We consider different selected sizes (100, 200, 500, and 1000) and report the image-to-text (TR) and text-to-image (IR) retrieval performance on Flicker8K dataset. 
+Ratio in the table represents the ratio of the dataset after distilliation and representative selection to the entire training dataset. 
+% This correlates to the storage dependent variable that was referred to in the claim, which is what we intend to reduce.  
+For each data point, we perform five trials and report results of our method along with standard deviation.} }
+  \label{tab:freq}
+  \begin{tabular}{lccl|ccc|c|ccc|c}
+    \toprule
+     & & & & \multicolumn{4}{|c|}{TR}  & \multicolumn{4}{c}{IR}  \\ \cmidrule{5-8}\cmidrule{9-12}
+     & & & & \multicolumn{3}{|c|}{Corset Selection} & &\multicolumn{3}{|c|}{Corset Selection} \\ \cmidrule{5-7} \cmidrule{8-11}
+    Dataset & \#pairs & ratio\% & metrics & R & H & F & ours & R & H & F & ours \\ 
+    \midrule
+    \multirow{8}{*}{Flickr8K} & \multirow{2}{*}{100} & \multirow{2}{*}{1.54} & R@5 & 5.9 & 4.7 & 4.2 & 24.3 $\pm$ 0.5 & 4.0 & 2.8 & 2.4 & 17.2 $\pm$ 0.3 \\
+                              & & & R@10 & 10.1 & 7.9 & 7.6  & 23.2 $\pm$ 0.8 & 6.5 & 5.3 & 5.6 & 24.6 $\pm$ 0.5 \\
+                              & \multirow{2}{*}{200} & \multirow{2}{*}{3.01} & R@5 & 8.7 & 8.7 & 8.4 & 26.7 $\pm$ 0.8 & 4.8 & 5.5 & 3.1 & 22.1 $\pm$ 0.6 \\
+                              & & & R@10 & 13.2 & 14.4 & 10.2  & 32.3 $\pm$ 0.9 & 9.2 & 9.3 & 8.4 & 29.2 $\pm$ 0.9 \\
+                              & \multirow{2}{*}{500} & \multirow{2}{*}{7.73} & R@5 & 18.3 & 16.4 & 22.3 & 38.5 $\pm$ 1.0 & 10.5 & 10.0 & 9.0 & 31.9 $\pm$ 0.6 \\
+                              & & & R@10 & 25.7 & 24.3 & 19.3  & 42.7 $\pm$ 1.7 & 17.4 & 17.0 & 15.9 & 38.9 $\pm$ 0.9 \\
+                              & \multirow{2}{*}{1000} & \multirow{2}{*}{15.45} & R@5 & 15.6 & 14.6 & 14.9 & 48.2 $\pm$ 0.8 & 11.8 & 12.1 & 9.5 & 37.1 $\pm$ 0.8 \\
+                              & & & R@10 & 21.4 & 20.4 & 18.9  & 65.1 $\pm$ 1.2 & 19.9 & 20.0 & 18.7 & 54.5 $\pm$ 0.8 \\
+  \bottomrule
+\end{tabular}
+\end{table*}
+
+\subsection{Efficiency Comparison}
+The method including clustering will improve the performance of distillation due to less cost of computational resources. we compare two distinct settings of our methodology. The first incorporates clustering, meaning that the initial selection of images for training is derived from the results of clustering. The second setting randomly selects a specific number of images from the original dataset for training purposes. In the following table \ref{tab_efficiency}, we present a comparison of these two settings. Notably, the clustering-inclusive setting achieves equivalent accuracy while saving up to 9 times the computational resources compared to the random selection method. 
+\begin{table}[!h]
+    \centering
+    \caption{Efficiency comparison on \( R@5 \) and \( R@10 \) when both of setting meet 30\% and 40\% accuracy}
+    \label{tab_efficiency}
+    \begin{tabular}{l|l|l}
+    \toprule
+        ~ & \multicolumn{2}{c}{Iteration} \\ \midrule
+        ~ & \( R@5 \) & \( R@10 \) \\ \midrule
+        \( \text{Distillation w/ Clustering} \) & 60 & 100\\ \midrule
+        \( \text{Distillation w/o Clustering} \) & 500 & 1000\\ \midrule
+    \end{tabular}
+\end{table}
+
+
+
+\section{Ablation Study and Analysis}
+To demonstrate the effectiveness of distillation and clustering, we consider a series of baselines for ablation studies. In this section, we provide those studies and our corresponding analysis.
+
+\subsection{Distill Initialization}
+In the previous experiment, we used real image samples for distillation. In this section, we want to evaluate how well distillation will perform when initialized with Gaussian noise. The result of the experiment is presented in the following table. We can observe that when initializing with Gaussian noise, the overall performance is lower than using real samples. However, when we compared using real text samples from training set to randomly generated "noise" texts, we didn't observe a considerable difference on the performance. The result we get from this experiment is also presented in the table \ref{tab:commands}.
+
+\begin{table}[!h]
+    \centering
+    \caption{Results of different settings on \( R@5 \) and \( R@10 \). \textmd{Here, \(\mathcal{R}\) denotes \textit{real} sample initialization and \(\mathcal{N}\) denotes \textit{noise} initialization. The subscripts \textit{image} and \textit{text} represent the data types.}}
+    \label{tab:commands}
+    \begin{tabular}{l|l|l|l|l}
+    \toprule
+        ~ & \multicolumn{2}{c|}{TR} & \multicolumn{2}{c}{IR}  \\ \midrule
+        ~ & \( R@5 \) & \( R@10 \) & \( R@5 \) & \( R@10 \)  \\ \midrule
+        \( \mathcal{R}_{\text{image}} \) \& \( \mathcal{R}_{\text{text}} \) & \textbf{49.3} & \textbf{65.1} & \textbf{35.9} & \textbf{53.5}  \\ 
+        \( \mathcal{R}_{\text{image}} \) \& \( \mathcal{N}_{\text{text}} \) & 45.1 & 59.3 & 31.9 & 46.7  \\ 
+        \( \mathcal{N}_{\text{image}} \) \& \( \mathcal{R}_{\text{text}} \) & 37.4 & 50.7 & 26.9 & 38.8  \\ 
+        \( \mathcal{N}_{\text{image}} \) \& \( \mathcal{N}_{\text{text}} \) & 29.2 & 41.8 & 23.1 & 31.5  \\ \midrule
+    \end{tabular}
+\end{table}
+
+\subsection{Encoder Backbone}
+In this section, we will explore different encodings for our image and text. As we stated in the previous sections, we use NFNet as the image backbone and CLIP as the text backbone. For the other setting, we show our results in table \ref{tab_backbone}.
+
+\textbf{Text Backbone} We have two choices of text backbones, which are BERT and CLIP. We observed that CLIP had relatively higher performance on most of the aspects of our system. 
+
+\textbf{Image Backbone} The vision encoder is more important for the distillation process than the text encoder. We performed experiments on several different popular vision backbones, including ResNet18\cite{he2016deep}, ResNet50\cite{he2016deep}, NFNet-l0\cite{brock2021high}, CoveNet, ViT-Tiny\cite{dosovitskiy2020image}. In the following table, we record the corresponding performances. We can see that the NFNet model has a better performance than other vision backbones in most cases.
+
+\begin{table}[!h]
+    \centering
+    \caption{Results of different settings on \( R@5 \) and \( R@10 \). Here, for the text backbone, we use NFNet-10 as image 
+ backbone. For the image backbone, we use CLIP as text backbone.}
+    \label{tab_backbone}
+    \begin{tabular}{l|l|l|l|l}
+    \toprule
+        ~ & \multicolumn{2}{c|}{TR} & \multicolumn{2}{c}{IR}  \\ \midrule
+        ~ & \( R@5 \) & \( R@10 \) & \( R@5 \) & \( R@10 \)  \\ \midrule
+        \ BERT & 38.6 & 56.8 & 29.9 & 43.1  \\ 
+        \ CLIP & 49.3 & 65.1 & 35.9 & 53.5  \\ 
+        \ ResNet18 & 21.9 & 30.2 & 16.4 & 24.8  \\ 
+        \ ResNet50 & 27.9 & 39.2 & 19.2 & 30.7  \\
+        \ NFNet-10 & \textbf{51.1} & \textbf{65.3} & \textbf{37.4} & \textbf{54.4}  \\ 
+        \ CoveNet & 16.1 & 23.6 & 11.9 & 17.5  \\
+        \ ViT-Tiny & 33.9 & 46.5 & 25.7 & 35.0  \\ \midrule
+    \end{tabular}
+\end{table}
+
+\subsection{Distillation Loss}
+In this section, we will compare the influence of different loss calculations. Distillation loss plays a pivotal role in guiding the training process. In our experiments, we explore various loss functions: the direct sum, represented by $L_{\text {total }}=L_{\text {image }}+L_{\text {text; }}$; the weighted sum; and the product of image and text losses, given by $L_{\text {total }}=L_{\text {image }} \cdot L_{\text {text }}$. Each of these functions has its distinct characteristics and potential implications on the retrieval performance. We show our result in table \ref{tab_loss}.
+
+\begin{table}[!h]
+    \centering
+    \caption{Results of different settings on \( R@5 \) and \( R@10 \). Here, we use NFNet-10 as image backbone and CLIP as text backbone.}
+    \label{tab_loss}
+    \begin{tabular}{l|l|l|l|l}
+    \toprule
+        ~ & \multicolumn{2}{c|}{TR} & \multicolumn{2}{c}{IR}  \\ \midrule
+        ~ & \( R@5 \) & \( R@10 \) & \( R@5 \) & \( R@10 \)  \\ \midrule
+        \( \mathcal{L}_{\text{image}} \) + \( \mathcal{L}_{\text{text}} \) & \textbf{49.3} & \textbf{65.1} & \textbf{35.9} & \textbf{53.5}  \\ 
+        \( \mathcal{L}_{\text{image}} \) * \( \mathcal{L}_{\text{text}} \) & 25.2 & 34.6 & 16.3 & 26.4  \\ \midrule
+    \end{tabular}
+\end{table}
+
+
+
+
+
+\section{Discussion}
+
+Although our strategy of distillation is able to achieve satisfactory results, it is worth mentioning that the computational requirements are still significant, especially dealing with large image sizes and an increased number of classes. Possible image enhancements may still not be able to remedy this problem with large image sets. Furthermore, it could also be more challenging to scale up these methods accordingly to accommodate bigger image classes. In the future, we may have to focus on developing techniques to deal with greater data sets and making them more efficient. These enhancements could further enhance the scalability and of dataset distillation for extensive and diverse image datasets.  
+
+
+\section{Conclusion}
+
+In this paper, we introduced a new dataset distillation method called Clustering BiTrajectory Matching. Our goal was to rely not on discrete class information for distillation, but on co-distillation for visual and textual elements. By using a representative set of original images, our method achieves a more stable and robust training process. Our BiTrajectory Matching can be applied widely to different scenarios and can reduce the computational overhead cost of training models. This will thus improve the pace of progress in machine learning workflows, and thus make the job easier for data systems that manage these machine learning models. Furthermore, the improved efficiency of bidirectional matching opens the door to exploring more complex matching metrics in the future. We hope that the insights we gathered can serve as a waypoint
+for future studies exploring more complex settings with regards to training models with distillation.
+
+
+%\clearpage
+
+\bibliographystyle{ACM-Reference-Format}
+\bibliography{ref}
+
+
+
+\end{document}
+\endinput
